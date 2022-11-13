@@ -2,13 +2,32 @@ const axios = require("axios");
 
 const url = "https://jsonplaceholder.typicode.com/todos/1";
 
-const printData = async (apiUrl) => {
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+const getAndPrintToDo = async (apiUrl: string) => {
   try {
     const response = await axios.get(apiUrl);
-    console.log(response.data);
+
+    const todo = response.data as Todo;
+
+    const id = todo.id;
+    const title = todo.title;
+    const completed = todo.completed;
+    logToDo(id, title, completed);
   } catch (error) {
     console.error(error);
   }
 };
 
-printData(url);
+const logToDo = (id: number, title: string, completed: boolean) => {
+  console.log(`
+    The todo with ID: ${id}
+    Has a title of: ${title}
+    Is it finished? ${completed}`);
+};
+
+getAndPrintToDo(url);
